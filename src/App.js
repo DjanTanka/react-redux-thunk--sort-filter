@@ -1,23 +1,36 @@
-import logo from './logo.svg';
-import './App.css';
+import { useCallback, useEffect, useState } from 'react';
+import Table from './components/Table'
+import axios from './axiosConfig'
+import { useSelector, useDispatch } from 'react-redux'
+import Filter from './components/Filter'
+import store from "./store/store"
 
 function App() {
+
+ const dispatch = useDispatch()
+
+ const users = useSelector(state => state.users)
+ const sortFilterUsers = useSelector(state => state.sortFilterUsers)
+    
+ const getData = useCallback(()=>{
+   axios.get('/getTable')
+     .then(({data}) => dispatch({type: "UPDATE_USERS", payload: data}))
+     .catch(function (error) { console.log(error) })
+ },[])
+
+  useEffect(() => {
+    if(users.length == 0) {
+      getData()
+    }
+    
+  },[getData])
+  // console.log(store.getState())
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div style={{margin: '20px'}}>Таблица клиентов банка:</div>
+      <Filter/>
+      {users.length>0&&<Table users={sortFilterUsers}/>}
+      
     </div>
   );
 }
