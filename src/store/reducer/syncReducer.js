@@ -1,4 +1,12 @@
-const reducer  = (state, action) => {  
+const initialState = {
+  users: [],
+  sortFilterUsers: [],
+  sortKind: '', 
+  valueFilter:'',
+  dir:'desc'
+}
+
+const syncReducer  = (state = initialState, action) => {  
   
   switch (action.type) {
      
@@ -66,11 +74,14 @@ const reducer  = (state, action) => {
         sortFilterUsers: [...state.users],
         sortKind:'',
         dir:'desc'
-    }  
+      }   
 
     default:
       return {...state}
   }
 }
 
-export default reducer
+export const updateUsers = (payload) => ({ type: 'UPDATE_USERS', payload });
+export const sortFiltersUsers = (payload) => ({ type: 'SORT_FILTER_USERS', payload });
+
+export default syncReducer

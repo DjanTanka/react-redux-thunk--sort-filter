@@ -3,14 +3,14 @@ import Table from './components/Table'
 import axios from './axiosConfig'
 import { useSelector, useDispatch } from 'react-redux'
 import Filter from './components/Filter'
-import store from "./store/store"
+import FetchUsers from './components/FetchUsers'
 
 function App() {
 
  const dispatch = useDispatch()
 
- const users = useSelector(state => state.users)
- const sortFilterUsers = useSelector(state => state.sortFilterUsers)
+ const users = useSelector(state => state.syncReducer.users)
+ const sortFilterUsers = useSelector(state => state.syncReducer.sortFilterUsers)
     
  const getData = useCallback(()=>{
    axios.get('/getTable')
@@ -30,7 +30,7 @@ function App() {
       <div style={{margin: '20px'}}>Таблица клиентов банка:</div>
       <Filter/>
       {users.length>0&&<Table users={sortFilterUsers}/>}
-      
+      <FetchUsers/>
     </div>
   );
 }
